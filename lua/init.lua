@@ -4,9 +4,9 @@ local utilities = require("stsln.utilities")
 local set_stsln = function()
   for _, win in pairs(vim.api.nvim_list_wins()) do
     if vim.api.nvim_get_current_win() == win then
-      vim.wo[win].statusline = "%!v:lua.require'stsln'.load(\"active\")"
+      vim.wo[win].statusline = "%!v:lua.require\'stsln\'.load(\"active\")"
     elseif vim.api.nvim_buf_get_name(0) ~= "" then
-      vim.wo[win].statusline = "%!v:lua.require'stsln'.load()"
+      vim.wo[win].statusline = "%!v:lua.require\'stsln\'.load()"
     end
   end
 end
