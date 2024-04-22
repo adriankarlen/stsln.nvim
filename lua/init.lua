@@ -61,7 +61,7 @@ local mode_icons = {
   ["R"] = " ",
 }
 
-function M.load(status)
+M.load = function(status)
   local mode = vim.api.nvim_get_mode()["mode"]
   local color = mode_colors[mode] or "#9ccfd8"
   local mode_icon = mode_icons[mode] or "󰋜 "
@@ -80,7 +80,7 @@ function M.load(status)
   return stsln
 end
 
-function M.setup()
+M.setup = function()
   vim.api.nvim_create_autocmd(
     { "BufEnter", "BufReadPost", "ColorSchemePre", "ModeChanged", "TabEnter", "TabClosed", "Filetype" },
     { callback = set_stsln }
