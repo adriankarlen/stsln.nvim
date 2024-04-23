@@ -96,6 +96,9 @@ M.load = function(status)
   if #harpoon_items > 0 then
     stsln = stsln .. "%=󰛢 "
     for _, item in ipairs(harpoon_items) do
+      if item.active then
+        stsln = stsln .. "%#StsLnActiveItem#"
+      end
       stsln = stsln .. item[1]
     end
   end
