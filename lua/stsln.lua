@@ -77,6 +77,21 @@ local get_harpoon_items = function()
   return label
 end
 
+local update_branch = function()
+    vim.b.stsln_branch = ""
+    if vim.b.gitsigns_head then
+        vim.b.stsln_branch = vim.b.gitsigns_head and (vim.b.gitsigns_head) or ""
+        return
+    end
+    vim.fn.jobstart({"git", "branch", "--show-current"}, {
+        stdout_buffered = true,
+        on_stdout = function(_, data)
+            local branch = data[1]
+            vim.b.stsln_branch = branch ~= "" and branch or ""
+        end
+    })
+end
+
 M.load = function(status)
   local mode = vim.api.nvim_get_mode()["mode"]
   local color = mode_colors[mode] or "#9ccfd8"
@@ -93,6 +108,7 @@ M.load = function(status)
 
   local stsln = ""
   stsln = " " .. mode_icon .. " "
+  stsln = stsln .. "%{get(b:, 'stsln_branch', '')} "
   if #harpoon_items > 0 then
     stsln = stsln .. "%=󰛢 "
     for _, item in ipairs(harpoon_items) do
@@ -108,6 +124,7 @@ M.load = function(status)
 end
 
 M.setup = function()
+  vim.api.nvim_create_autocmd({'BufReadPost', 'DirChanged'}, {callback=update_branch})
   vim.api.nvim_create_autocmd(
     { "BufEnter", "BufReadPost", "ColorSchemePre", "ModeChanged", "TabEnter", "TabClosed", "Filetype" },
     { callback = set_stsln }
