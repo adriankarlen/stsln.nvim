@@ -77,6 +77,18 @@ local get_harpoon_items = function()
   return label
 end
 
+local get_formatters = function()
+  local conform = require "conform"
+  local formatters = conform.list_formatters()
+  local label = {}
+
+  for _, formatter in ipairs(formatters) do
+    table.insert(label, { formatter .. " " })
+  end
+
+  return label
+end
+
 local update_branch = function()
     vim.b.stsln_branch = ""
     if vim.b.gitsigns_head then
@@ -97,6 +109,7 @@ M.load = function(status)
   local color = mode_colors[mode] or "#9ccfd8"
   local mode_icon = mode_icons[mode] or "󰋜 "
   local harpoon_items = get_harpoon_items()
+  local formatters = get_formatters()
 
   if status == "active" then
     utilities.colorize("StatusLine", color, color)
@@ -119,7 +132,14 @@ M.load = function(status)
       end
     end
   end
-  stsln = stsln .. "%= %l:%c 󰧱 "
+  stsln = stsln .. "%="
+  if #formatters > 0 then
+    stsln = stsln .. "󰏥 "
+    for _, formatter in ipairs(formatters) do
+      stsln = stsln .. formatter[1]
+    end
+  end
+  stsln = stsln .. " 󰧱  "
   return stsln
 end
 
