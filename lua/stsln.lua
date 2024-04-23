@@ -79,7 +79,7 @@ end
 
 local get_formatters = function()
   local conform = require "conform"
-  local formatters = conform.list_formatters()
+  local formatters = conform.list_formatters(0)
   local label = {}
 
   for _, formatter in ipairs(formatters) do
