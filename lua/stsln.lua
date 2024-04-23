@@ -97,9 +97,10 @@ M.load = function(status)
     stsln = stsln .. "%=󰛢 "
     for _, item in ipairs(harpoon_items) do
       if item.active then
-        stsln = stsln .. "%#StsLnActiveItem#"
+        stsln = stsln .. "%#StsLnActiveItem#" .. item[1] .. "%#StatusLine#"
+      else
+        stsln = stsln .. item[1]
       end
-      stsln = stsln .. item[1]
     end
   end
   stsln = stsln .. "%= %l:%c 󰧱 "
