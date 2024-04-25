@@ -83,7 +83,7 @@ local get_formatters = function()
   local label = {}
 
   for _, formatter in ipairs(formatters) do
-    print(formatter)
+    print(formatter.name)
     -- table.insert(label, { formatter .. " " })
   end
 
