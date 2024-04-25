@@ -83,26 +83,25 @@ local get_formatters = function()
   local label = {}
 
   for _, formatter in ipairs(formatters) do
-    print(formatter.name)
-    -- table.insert(label, { formatter .. " " })
+    table.insert(label, { " " .. formatter.name })
   end
 
   return label
 end
 
 local update_branch = function()
-    vim.b.stsln_branch = ""
-    if vim.b.gitsigns_head then
-        vim.b.stsln_branch = vim.b.gitsigns_head and (vim.b.gitsigns_head) or ""
-        return
-    end
-    vim.fn.jobstart({"git", "branch", "--show-current"}, {
-        stdout_buffered = true,
-        on_stdout = function(_, data)
-            local branch = data[1]
-            vim.b.stsln_branch = branch ~= "" and branch or ""
-        end
-    })
+  vim.b.stsln_branch = ""
+  if vim.b.gitsigns_head then
+    vim.b.stsln_branch = vim.b.gitsigns_head and vim.b.gitsigns_head or ""
+    return
+  end
+  vim.fn.jobstart({ "git", "branch", "--show-current" }, {
+    stdout_buffered = true,
+    on_stdout = function(_, data)
+      local branch = data[1]
+      vim.b.stsln_branch = branch ~= "" and branch or ""
+    end,
+  })
 end
 
 M.load = function(status)
@@ -134,18 +133,18 @@ M.load = function(status)
     end
   end
   stsln = stsln .. "%="
-  --if #formatters > 0 then
-  --  stsln = stsln .. "󰏥 "
-  --  for _, formatter in ipairs(formatters) do
-  --    stsln = stsln .. formatter[1]
-  --  end
-  --end
+  if #formatters > 0 then
+    stsln = stsln .. " "
+    for _, formatter in ipairs(formatters) do
+      stsln = stsln .. formatter[1]
+    end
+  end
   stsln = stsln .. " 󰧱  "
   return stsln
 end
 
 M.setup = function()
-  vim.api.nvim_create_autocmd({'BufReadPost', 'DirChanged'}, {callback=update_branch})
+  vim.api.nvim_create_autocmd({ "BufReadPost", "DirChanged" }, { callback = update_branch })
   vim.api.nvim_create_autocmd(
     { "BufEnter", "BufReadPost", "ColorSchemePre", "ModeChanged", "TabEnter", "TabClosed", "Filetype" },
     { callback = set_stsln }
