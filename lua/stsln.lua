@@ -109,7 +109,7 @@ M.load = function(status)
   local color = mode_colors[mode] or "#9ccfd8"
   local mode_icon = mode_icons[mode] or "󰋜 "
   local harpoon_items = get_harpoon_items()
-  local formatters = get_formatters()
+  --local formatters = get_formatters()
 
   if status == "active" then
     utilities.colorize("StatusLine", color, color)
@@ -133,12 +133,12 @@ M.load = function(status)
     end
   end
   stsln = stsln .. "%="
-  if #formatters > 0 then
-    stsln = stsln .. "󰏥 "
-    for _, formatter in ipairs(formatters) do
-      stsln = stsln .. formatter[1]
-    end
-  end
+  --if #formatters > 0 then
+  --  stsln = stsln .. "󰏥 "
+  --  for _, formatter in ipairs(formatters) do
+  --    stsln = stsln .. formatter[1]
+  --  end
+  --end
   stsln = stsln .. " 󰧱  "
   return stsln
 end
