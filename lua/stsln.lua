@@ -83,7 +83,7 @@ local get_formatters = function()
   local label = {}
 
   for _, formatter in ipairs(formatters) do
-    table.insert(label, { " " .. formatter.name })
+    table.insert(label, { formatter.name .. " " })
   end
 
   return label
@@ -139,7 +139,7 @@ M.load = function(status)
       stsln = stsln .. formatter[1]
     end
   end
-  stsln = stsln .. " 󰧱  "
+  stsln = stsln .. "󰧱  "
   return stsln
 end
 
