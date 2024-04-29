@@ -61,7 +61,11 @@ local set_stsln = function()
 end
 
 local get_harpoon_items = function()
-  local harpoon = require "harpoon"
+  local status, harpoon = pcall(require, "harpoon")
+  if not status then
+    return {}
+  end
+
   local marks = harpoon:list().items
   local current_file_path = vim.fn.expand "%:p:."
   local label = {}
@@ -78,7 +82,11 @@ local get_harpoon_items = function()
 end
 
 local get_formatters = function()
-  local conform = require "conform"
+  local status, conform = pcall(require, "conform")
+  if not status then
+    return {}
+  end
+
   local formatters = conform.list_formatters(0)
   local label = {}
 
