@@ -153,12 +153,9 @@ M.load = function(status)
     end
   end
   stsln = stsln .. "%="
-  if #formatters > 0 then
-    stsln = stsln .. " "
-    for _, formatter in ipairs(formatters) do
-      stsln = stsln .. formatter[1]
-    end
-  end
+  stsln = stsln .. utilities.dump(lsp_clients, "󱌣") .. " "
+  stsln = stsln .. utilities.dump(formatters, "")
+
   stsln = stsln .. "󰧱  "
   return stsln
 end
