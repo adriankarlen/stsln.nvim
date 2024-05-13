@@ -87,25 +87,23 @@ local get_formatters = function()
     return {}
   end
 
-  local formatters = conform.list_formatters(0)
-  local label = {}
+  local formatters = {}
 
-  for _, formatter in ipairs(formatters) do
-    table.insert(label, { formatter.name .. " " })
+  for _, formatter in ipairs(conform.list_formatters(0)) do
+    table.insert(formatters, formatter.name)
   end
 
-  return table.concat(label, "|")
+  return #formatters == 0 and "" or " " .. table.concat(formatters, ", ")
 end
+
 local lsp_client_name = function()
   local clients = {}
-  local clients_name = ""
 
   for _, client in pairs(vim.lsp.get_active_clients()) do -- Deprecated?
-    clients[#clients + 1] = client.name
+    table.insert(clients, client.name)
   end
-  clients_name = table.concat(clients, ", ")
 
-  return "󱌣" .. clients_name
+  return #clients == 0 and "" or "󱌣 " .. table.concat(clients, ", ")
 end
 
 local update_branch = function()
@@ -142,6 +140,7 @@ M.load = function(status)
   local stsln = ""
   stsln = " " .. mode_icon .. " "
   stsln = stsln .. "%{get(b:, 'stsln_branch', '')} "
+
   if #harpoon_items > 0 then
     stsln = stsln .. "%=󰛢 "
     for _, item in ipairs(harpoon_items) do
@@ -152,9 +151,10 @@ M.load = function(status)
       end
     end
   end
+
   stsln = stsln .. "%="
   stsln = stsln .. lsp_clients .. " "
-  stsln = formatters and stsln .. " " .. formatters .. " " or stsln
+  stsln = stsln .. formatters .. " "
 
   stsln = stsln .. "󰧱  "
   return stsln
