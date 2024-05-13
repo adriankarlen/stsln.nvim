@@ -153,9 +153,11 @@ M.load = function(status)
     end
   end
   stsln = stsln .. "%="
-  stsln = stsln .. utilities.dump(lsp_clients, "󱌣")
-  stsln = stsln .. " "
-  stsln = stsln .. utilities.dump(formatters, "")
+  local lsp_stsln = utilities.dump(lsp_clients, "󱌣")
+  stsln = lsp_stsln and stsln .. lsp_stsln .. " " or stsln
+
+  local formatters_stsln = utilities.dump(formatters, "")
+  stsln = formatters_stsln and stsln .. formatters_stsln or stsln
 
   stsln = stsln .. "󰧱  "
   return stsln

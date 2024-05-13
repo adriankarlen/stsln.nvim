@@ -47,10 +47,10 @@ U.dump = function(items, icon)
     if items[#item] == item then
       print(item)
       print(s)
-      -- s = s .. item
+      s = s .. item
       goto continue
     end
-    -- s = s .. item .. ", "
+    s = s .. item .. ", "
     ::continue::
   end
 
