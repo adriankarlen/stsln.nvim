@@ -97,6 +97,17 @@ local get_formatters = function()
   return label
 end
 
+local get_lsp_clients = function()
+  local clients = vim.lsp.get_active_clients()
+  local label = {}
+
+  for _, client in ipairs(clients) do
+    table.insert(label, client.name)
+  end
+
+  return label
+end
+
 local update_branch = function()
   vim.b.stsln_branch = ""
   if vim.b.gitsigns_head then
@@ -118,6 +129,7 @@ M.load = function(status)
   local mode_icon = mode_icons[mode] or "󰋜 "
   local harpoon_items = get_harpoon_items()
   local formatters = get_formatters()
+  local lsp_clients = get_lsp_clients()
 
   if status == "active" then
     utilities.colorize("StatusLine", color, color)
