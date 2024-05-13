@@ -87,14 +87,23 @@ local get_formatters = function()
     return {}
   end
 
-  local formatters = conform.list_formatters(0)
-  local label = {}
+  local formatters = {}
 
-  for _, formatter in ipairs(formatters) do
-    table.insert(label, { formatter.name .. " " })
+  for _, formatter in ipairs(conform.list_formatters(0)) do
+    table.insert(formatters, formatter.name)
   end
 
-  return label
+  return #formatters == 0 and "" or " " .. table.concat(formatters, ", ")
+end
+
+local lsp_client_name = function()
+  local clients = {}
+
+  for _, client in pairs(vim.lsp.get_active_clients()) do -- Deprecated?
+    table.insert(clients, client.name)
+  end
+
+  return #clients == 0 and "" or "󱌣 " .. table.concat(clients, ", ")
 end
 
 local update_branch = function()
@@ -117,6 +126,7 @@ M.load = function(status)
   local color = mode_colors[mode] or "#9ccfd8"
   local mode_icon = mode_icons[mode] or "󰋜 "
   local harpoon_items = get_harpoon_items()
+  local lsp_clients = lsp_client_name()
   local formatters = get_formatters()
 
   if status == "active" then
@@ -130,6 +140,7 @@ M.load = function(status)
   local stsln = ""
   stsln = " " .. mode_icon .. " "
   stsln = stsln .. "%{get(b:, 'stsln_branch', '')} "
+
   if #harpoon_items > 0 then
     stsln = stsln .. "%=󰛢 "
     for _, item in ipairs(harpoon_items) do
@@ -140,13 +151,11 @@ M.load = function(status)
       end
     end
   end
+
   stsln = stsln .. "%="
-  if #formatters > 0 then
-    stsln = stsln .. " "
-    for _, formatter in ipairs(formatters) do
-      stsln = stsln .. formatter[1]
-    end
-  end
+  stsln = stsln .. lsp_clients .. " "
+  stsln = stsln .. formatters .. " "
+
   stsln = stsln .. "󰧱  "
   return stsln
 end
