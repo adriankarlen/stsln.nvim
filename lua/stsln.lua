@@ -153,7 +153,8 @@ M.load = function(status)
     end
   end
   stsln = stsln .. "%="
-  stsln = stsln .. utilities.dump(lsp_clients, "󱌣") .. " "
+  stsln = stsln .. utilities.dump(lsp_clients, "󱌣")
+  stsln = stsln .. " "
   stsln = stsln .. utilities.dump(formatters, "")
 
   stsln = stsln .. "󰧱  "
