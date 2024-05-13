@@ -45,10 +45,12 @@ U.dump = function(items, icon)
   local s = icon and icon .. " " or ""
   for _, item in ipairs(items) do
     if items[#item] == item then
-      s = s .. item
+      print(item)
+      print(s)
+      -- s = s .. item
       goto continue
     end
-    s = s .. item .. ", "
+    -- s = s .. item .. ", "
     ::continue::
   end
 
