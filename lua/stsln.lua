@@ -96,19 +96,16 @@ local get_formatters = function()
 
   return table.concat(label, "|")
 end
-local get_lsp_clients = function()
-  local bufnr = vim.api.nvim_get_current_buf()
+local lsp_client_name = function()
+  local clients = {}
+  local clients_name = ""
 
-  local clients = vim.lsp.buf_get_clients(bufnr)
-  if next(clients) == nil then
-    return ""
+  for _, client in pairs(vim.lsp.get_active_clients()) do -- Deprecated?
+    clients[#clients + 1] = client.name
   end
+  clients_name = table.concat(clients, ", ")
 
-  local c = {}
-  for _, client in pairs(clients) do
-    table.insert(c, client.name)
-  end
-  return table.concat(c, "|")
+  return "󱌣" .. clients_name
 end
 
 local update_branch = function()
@@ -131,7 +128,7 @@ M.load = function(status)
   local color = mode_colors[mode] or "#9ccfd8"
   local mode_icon = mode_icons[mode] or "󰋜 "
   local harpoon_items = get_harpoon_items()
-  local lsp_clients = get_lsp_clients()
+  local lsp_clients = lsp_client_name()
   local formatters = get_formatters()
 
   if status == "active" then
@@ -156,7 +153,7 @@ M.load = function(status)
     end
   end
   stsln = stsln .. "%="
-  stsln = lsp_clients and stsln .. "󱌣 " .. lsp_clients .. " " or stsln
+  stsln = stsln .. lsp_clients .. " "
   stsln = formatters and stsln .. " " .. formatters .. " " or stsln
 
   stsln = stsln .. "󰧱  "
