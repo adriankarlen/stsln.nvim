@@ -37,23 +37,4 @@ U.get_file_icon = function(f_name, ext)
   return icons.get_icon(f_name, ext, { default = true })
 end
 
-U.dump = function(items, icon)
-  if type(items) ~= "table" or #items < 1 then
-    return
-  end
-
-  local s = icon and icon .. " " or ""
-  for _, item in ipairs(items) do
-    if items[#item] == item then
-      print(item)
-      print(s)
-      s = s .. item
-      goto continue
-    end
-    s = s .. item .. ", "
-    ::continue::
-  end
-
-  return s
-end
 return U
